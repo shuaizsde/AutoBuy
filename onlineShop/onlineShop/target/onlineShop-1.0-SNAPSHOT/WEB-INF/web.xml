@@ -1,0 +1,47 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<!-- 整个xml文件是给tomcat看的  -->
+<web-app>
+	<display-name>OnlineShop WebSite</display-name>
+
+	<!-- to connect the dispatcher servlet and applicationContext -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/onlineShop-servlet.xml,
+			/WEB-INF/webflowConfig.xml
+		</param-value>
+	</context-param>
+
+	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern><!-- "/*" 是说找onlineShop下面的所有资源  -->
+	</filter-mapping>
+
+	<!-- it is used to listen the contextloader -->
+	<!-- 创建了一个spring container，叫做"ContextLoaderListener" -->
+	<!-- 用来读取onlineShop-servlet.xml 和 webflowConfig.xml -->
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+
+	<!-- 相当于第一个项目的servlets  -->
+	<servlet>
+		<servlet-name>onlineShop</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	</servlet>
+
+	<!-- 跳转到onlineShop-servlet.xml  -->
+	<servlet-mapping>
+		<servlet-name>onlineShop</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+</web-app>
